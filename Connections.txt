@@ -1,0 +1,6 @@
+CREDENCIALES DB
+
+Servidor: iaew-tpi.database.windows.net
+Usuario: iaew-user-db
+Contraseña: Password1
+Nombre de la bd: TPI-IAEW
