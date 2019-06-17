@@ -65,3 +65,7 @@ D:\IAEW 2019\Grupo5-Repo\CODIGO\IAEW-TPI\API-TP\obj\Debug\API-TP.csproj.CoreComp
 D:\IAEW 2019\Grupo5-Repo\CODIGO\IAEW-TPI\API-TP\obj\Debug\API-TP.csproj.CopyComplete
 D:\IAEW 2019\Grupo5-Repo\CODIGO\IAEW-TPI\API-TP\obj\Debug\API-TP.dll
 D:\IAEW 2019\Grupo5-Repo\CODIGO\IAEW-TPI\API-TP\obj\Debug\API-TP.pdb
+D:\IAEW 2019\Grupo5-Repo\CODIGO\IAEW-TPI\API-TP\bin\EntityFramework.dll
+D:\IAEW 2019\Grupo5-Repo\CODIGO\IAEW-TPI\API-TP\bin\EntityFramework.SqlServer.dll
+D:\IAEW 2019\Grupo5-Repo\CODIGO\IAEW-TPI\API-TP\bin\EntityFramework.xml
+D:\IAEW 2019\Grupo5-Repo\CODIGO\IAEW-TPI\API-TP\bin\EntityFramework.SqlServer.xml
