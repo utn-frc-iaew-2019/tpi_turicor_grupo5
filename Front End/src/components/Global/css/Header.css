@@ -1,0 +1,25 @@
+.Header {
+  background-color: rgb(0, 156, 161);
+  min-height: 20vh;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.Menu li{
+  display: inline-block;
+  padding-right: 10px;
+}
+
+.Menu li a{
+  color: rgb(0, 0, 0);
+  text-decoration: none;
+}
+
+.Menu li a:hover{
+  color: rgb(255, 255, 255)
+}
