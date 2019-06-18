@@ -12,6 +12,8 @@ namespace API_TP.Controllers
     //[Route("api/[controller]")] Esto se explicita en App_Start / WebApiConfig.cs
     public class UsersController : ApiController
     {
+        private Entities1 db = new Entities1();
+
         List<User> users = new List<User>
         {
             new User { IdUser = 1, Name = "Juan Perez",
