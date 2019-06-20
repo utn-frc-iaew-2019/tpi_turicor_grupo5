@@ -44,5 +44,29 @@ namespace API_TP.Controllers
             }
             return Ok(user);
         }
+
+
+
+        [HttpPost]
+        public IHttpActionResult PostUser(string name, string lastname, int doc, string email)
+        {
+            try
+            {
+                Cliente client = new Cliente();
+                client.Nombre = name;
+                client.Apellido = lastname;
+                client.NroDocumento = doc;
+                client.Usuario = email;
+
+                db.Cliente.Add(client);
+                db.SaveChanges();
+
+                return Ok(client);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+        }
     }
 }
