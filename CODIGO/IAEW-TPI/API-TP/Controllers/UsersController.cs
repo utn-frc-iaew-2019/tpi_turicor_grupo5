@@ -14,36 +14,36 @@ namespace API_TP.Controllers
     {
         private Entities1 db = new Entities1();
 
-        List<User> users = new List<User>
-        {
-            new User { IdUser = 1, Name = "Juan Perez",
-                       UserName = "juan.perez", Password = "pass123",
-                       ModifiedDate = DateTime.Now},
-            new User { IdUser = 2, Name = "Esteban Ruiz",
-                       UserName = "esteban.ruiz", Password = "pass123",
-                       ModifiedDate = DateTime.Now},
-            new User { IdUser = 3, Name = "Ricardo Rodriguez",
-                       UserName = "ricardo.rodriguez", Password = "pass123",
-                       ModifiedDate = DateTime.Now},
-        };
+        //List<User> users = new List<User>
+        //{
+        //    new User { IdUser = 1, Name = "Juan Perez",
+        //               UserName = "juan.perez", Password = "pass123",
+        //               ModifiedDate = DateTime.Now},
+        //    new User { IdUser = 2, Name = "Esteban Ruiz",
+        //               UserName = "esteban.ruiz", Password = "pass123",
+        //               ModifiedDate = DateTime.Now},
+        //    new User { IdUser = 3, Name = "Ricardo Rodriguez",
+        //               UserName = "ricardo.rodriguez", Password = "pass123",
+        //               ModifiedDate = DateTime.Now},
+        //};
 
-        [HttpGet]
-        public List<User> GetAllUsers()
-        {
-            return users;
-        }
+        //[HttpGet]
+        //public List<User> GetAllUsers()
+        //{
+        //    return users;
+        //}
 
-        // GET: api/users/3
-        [HttpGet]
-        public IHttpActionResult GetUser(int id)
-        {
-            var user = users.FirstOrDefault((p) => p.IdUser == id);
-            if (user == null)
-            {
-                return NotFound();
-            }
-            return Ok(user);
-        }
+        //// GET: api/users/3
+        //[HttpGet]
+        //public IHttpActionResult GetUser(int id)
+        //{
+        //    var user = users.FirstOrDefault((p) => p.IdUser == id);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return Ok(user);
+        //}
 
 
 
