@@ -28,7 +28,7 @@ namespace API_TP.Controllers
                 foreach (var item in valor.VehiculosEncontrados)
                 {
                     decimal precio = item.PrecioPorDia;
-                    decimal precioFinal = precio + (precio/100*20);
+                    decimal precioFinal = precio * (decimal)1.2;
                     item.PrecioPorDia = precioFinal;
                 }
 
@@ -39,52 +39,6 @@ namespace API_TP.Controllers
                 return NotFound();
             }
         }
-
-        [HttpPost]
-        public IHttpActionResult ReservarVehiculo(string nomyape, DateTime fhdev, DateTime fhret, int idVehCiudad, string lugarDev, string lugarRet, int doc)
-        {
-            //TIRO EN POSTMAN
-            //http://localhost:26812/api/Vehiculos/ReservarVehiculos?nomyape="Santiago Innocenti"&fhdev=2019-06-22T13:45:30&fhret=2019-06-23T13:45:30&idVehCiudad=58&lugarDev=Plaza Colon&lugarRet=Aeropuerto&doc=123456789
-
-
-            //FALTA AGREGAR QUE RECIBA POR PARAMETRO EL ID DEL CLIENTE, Y GUARDARLO EN BD
-            //TAMBIEN FALTA EL ID DE LA CIUDAD Y EL ID DEL PAIS, TAMBIEN GUARDAR EN BD  
-            try
-            {
-                var client = new ServiceReference1.WCFReservaVehiculosClient();
-                var credentials = Credenciales();
-
-                var request = new ServiceReference1.ReservarVehiculoRequest();
-                request.ApellidoNombreCliente = nomyape;
-                request.FechaHoraDevolucion = fhdev;
-                request.FechaHoraRetiro = fhret;
-                request.IdVehiculoCiudad = idVehCiudad;
-                request.NroDocumentoCliente = ""+doc;
-                var valor = client.ReservarVehiculo(credentials, request);
-
-                decimal costoReserva = valor.Reserva.TotalReserva * (-1); //VIENE EN NEGATIVO, POR ESO SE MULTIPLICA POR -1
-                decimal precioFinalReserva = costoReserva + costoReserva / 100 * 20;
-                string codigoReserva = valor.Reserva.CodigoReserva;
-
-                Reserva nuevaReserva = new Reserva();
-                nuevaReserva.CodigoReserva = codigoReserva;
-                nuevaReserva.FechaReserva = fhret;
-                //nuevaReserva.IdCliente = ;
-                nuevaReserva.Costo = (double)costoReserva;
-                nuevaReserva.PrecioVenta = (double)precioFinalReserva;
-                nuevaReserva.IdVehiculoCiudad = idVehCiudad;
-
-                db.Reserva.Add(nuevaReserva);
-                db.SaveChanges();
-
-                return Ok(nuevaReserva.ToString());
-            }
-            catch (Exception ex)
-            {
-                return NotFound();
-            }
-        }
-
 
         private ServiceReference1.Credentials Credenciales()
         {
