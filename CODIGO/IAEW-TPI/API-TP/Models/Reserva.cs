@@ -14,8 +14,7 @@ namespace API_TP.Models
     
     public partial class Reserva
     {
-        public int Id { get; set; }
-        public Nullable<int> CodigoReserva { get; set; }
+        public string CodigoReserva { get; set; }
         public Nullable<System.DateTime> FechaReserva { get; set; }
         public Nullable<int> IdCliente { get; set; }
         public Nullable<int> IdVendedor { get; set; }
@@ -24,6 +23,7 @@ namespace API_TP.Models
         public Nullable<int> IdVehiculoCiudad { get; set; }
         public Nullable<int> IdCiudad { get; set; }
         public Nullable<int> idPais { get; set; }
+        public int Id { get; set; }
     
         public virtual Cliente Cliente { get; set; }
         public virtual Vendedor Vendedor { get; set; }

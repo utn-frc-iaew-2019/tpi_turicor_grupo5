@@ -26,7 +26,7 @@ namespace API_TP.Models
         }
     
         public virtual DbSet<Cliente> Cliente { get; set; }
-        public virtual DbSet<Reserva> Reserva { get; set; }
         public virtual DbSet<Vendedor> Vendedor { get; set; }
+        public virtual DbSet<Reserva> Reserva { get; set; }
     }
 }

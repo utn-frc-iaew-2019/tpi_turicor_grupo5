@@ -6,11 +6,11 @@
     <edmx:Diagrams>
       <Diagram DiagramId="37b5aba854c14606a81de294f1c9e038" Name="Diagram1">
         <EntityTypeShape EntityType="API.Model.Cliente" Width="1.5" PointX="0.75" PointY="1.625" IsExpanded="true" />
-        <EntityTypeShape EntityType="API.Model.Reserva" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="API.Model.Vendedor" Width="1.5" PointX="0.75" PointY="5.875" IsExpanded="true" />
-        <AssociationConnector Association="API.Model.FK_Reserva_Cliente" ManuallyRouted="false" />
-        <AssociationConnector Association="API.Model.FK_Reserva_Vendedor" ManuallyRouted="false" />
-      </Diagram>
+        <EntityTypeShape EntityType="API.Model.Reserva" Width="1.5" PointX="3" PointY="2.875" />
+        <AssociationConnector Association="API.Model.FK_Reserva_Cliente" />
+        <AssociationConnector Association="API.Model.FK_Reserva_Vendedor" />
+        </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
 </edmx:Edmx>

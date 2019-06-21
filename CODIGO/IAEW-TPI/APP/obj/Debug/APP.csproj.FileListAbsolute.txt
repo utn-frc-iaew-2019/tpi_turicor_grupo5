@@ -115,3 +115,8 @@ D:\IAEW 2019\Grupo5-Repo\CODIGO\IAEW-TPI\APP\obj\Debug\APP.csproj.CoreCompileInp
 D:\IAEW 2019\Grupo5-Repo\CODIGO\IAEW-TPI\APP\obj\Debug\APP.csproj.CopyComplete
 D:\IAEW 2019\Grupo5-Repo\CODIGO\IAEW-TPI\APP\obj\Debug\APP.dll
 D:\IAEW 2019\Grupo5-Repo\CODIGO\IAEW-TPI\APP\obj\Debug\APP.pdb
+D:\IAEW 2019\Grupo5-Repo\CODIGO\IAEW-TPI\APP\bin\System.Net.Http.Extensions.dll
+D:\IAEW 2019\Grupo5-Repo\CODIGO\IAEW-TPI\APP\bin\System.Net.Http.Primitives.dll
+D:\IAEW 2019\Grupo5-Repo\CODIGO\IAEW-TPI\APP\bin\System.Net.Http.Extensions.xml
+D:\IAEW 2019\Grupo5-Repo\CODIGO\IAEW-TPI\APP\bin\System.Net.Http.Primitives.xml
+D:\IAEW 2019\Grupo5-Repo\CODIGO\IAEW-TPI\APP\obj\Debug\APP.csproj.App.config

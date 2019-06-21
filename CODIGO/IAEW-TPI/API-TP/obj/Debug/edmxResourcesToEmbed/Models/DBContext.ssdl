@@ -14,8 +14,7 @@
     <Key>
       <PropertyRef Name="Id" />
     </Key>
-    <Property Name="Id" Type="int" Nullable="false" />
-    <Property Name="CodigoReserva" Type="int" />
+    <Property Name="CodigoReserva" Type="varchar" MaxLength="10" />
     <Property Name="FechaReserva" Type="date" />
     <Property Name="IdCliente" Type="int" />
     <Property Name="IdVendedor" Type="int" />
@@ -24,6 +23,7 @@
     <Property Name="IdVehiculoCiudad" Type="int" />
     <Property Name="IdCiudad" Type="int" />
     <Property Name="idPais" Type="int" />
+    <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
   </EntityType>
   <EntityType Name="Vendedor">
     <Key>
