@@ -1,10 +1,13 @@
 ﻿using API_TP.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Web.Http;
+using System.Web.Http.Results;
+using System.Xml;
 
 namespace API_TP.Controllers
 {
@@ -13,7 +16,7 @@ namespace API_TP.Controllers
         private Entities1 db = new Entities1();
 
         [HttpGet]
-        public IHttpActionResult ListadoVehiculos(int idCiudad)
+        public IHttpActionResult ListadoVehiculos([FromUri] int idCiudad)
         {
             try
             {
@@ -24,15 +27,19 @@ namespace API_TP.Controllers
                 request.IdCiudad = idCiudad;
                 var valor = client.ConsultarVehiculosDisponibles(credentials, request);
 
+                List<object> vehiculos = new List<object>();
                 //SE LE SUMA UN 20% DEL VALOR
                 foreach (var item in valor.VehiculosEncontrados)
                 {
                     decimal precio = item.PrecioPorDia;
                     decimal precioFinal = precio * (decimal)1.2;
                     item.PrecioPorDia = precioFinal;
-                }
 
-                return Ok(valor);
+                    vehiculos.Add(new {Marca = ""+item.Marca, Modelo = ""+item.Modelo, Puertas = ""+item.CantidadPuertas,
+                    Puntaje = ""+item.Puntaje, Precio = ""+precioFinal});
+                }
+                return Json(vehiculos);
+                //return JsonResult(vehiculos);
             }
             catch (Exception ex)
             {

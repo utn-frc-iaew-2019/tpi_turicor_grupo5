@@ -35,7 +35,7 @@ namespace API_TP.Controllers
 
         [HttpGet]
         //Equivale a Consultar el Detalle de una Reserva
-        public IHttpActionResult ConsultarReserva(string codigo)
+        public IHttpActionResult ConsultarReserva([FromUri] string codigo)
         {
             try
             {
@@ -53,6 +53,8 @@ namespace API_TP.Controllers
                 return NotFound();
             }
         }
+
+        ///cliente/idcliente/reservas
                
         [HttpGet]
         public IHttpActionResult ListadoReservas(Cliente cliente)
@@ -104,8 +106,10 @@ namespace API_TP.Controllers
         }
 
 
+
         [HttpPost]
-        public IHttpActionResult ReservarVehiculo(Cliente cliente, DateTime fhdev, DateTime fhret, int idVehCiudad, int idCiudad, int idPais)
+        //public IHttpActionResult ReservarVehiculo(Cliente cliente, DateTime fhdev, DateTime fhret, int idVehCiudad, int idCiudad, int idPais)
+        public IHttpActionResult ReservarVehiculo([FromBody] Reserva reserva)
         {
             //TIRO EN POSTMAN
             //http://localhost:26812/api/Vehiculos/ReservarVehiculos?nomyape="Santiago Innocenti"&fhdev=2019-06-22T13:45:30&fhret=2019-06-23T13:45:30&idVehCiudad=58&lugarDev=Plaza Colon&lugarRet=Aeropuerto&doc=123456789
@@ -117,11 +121,13 @@ namespace API_TP.Controllers
                 var credentials = Credenciales();
 
                 var request = new ServiceReference1.ReservarVehiculoRequest();
-                request.ApellidoNombreCliente = cliente.Apellido + cliente.Nombre;
-                request.FechaHoraDevolucion = fhdev;
-                request.FechaHoraRetiro = fhret;
-                request.IdVehiculoCiudad = idVehCiudad;
-                request.NroDocumentoCliente = cliente.NroDocumento.ToString();
+                //request.ApellidoNombreCliente = cliente.Apellido + cliente.Nombre;
+                request.ApellidoNombreCliente = null;// nomyape;
+                //request.FechaHoraDevolucion =;// fhdev;
+                //request.FechaHoraRetiro = fhret;
+                //request.IdVehiculoCiudad = ;// idVehCiudad;
+                //request.NroDocumentoCliente = cliente.NroDocumento.ToString();
+                //request.NroDocumentoCliente = ""+doc;
                 var valor = client.ReservarVehiculo(credentials, request);
 
                 decimal costoReserva = valor.Reserva.TotalReserva * (-1); //VIENE EN NEGATIVO, POR ESO SE MULTIPLICA POR -1
@@ -130,13 +136,13 @@ namespace API_TP.Controllers
 
                 Reserva nuevaReserva = new Reserva();
                 nuevaReserva.CodigoReserva = codigoReserva;
-                nuevaReserva.FechaReserva = fhret;
-                nuevaReserva.IdCliente = cliente.Id;
+                nuevaReserva.FechaReserva = null;//fhret;
+                //nuevaReserva.IdCliente = cliente.Id;
                 nuevaReserva.Costo = (double)costoReserva;
                 nuevaReserva.PrecioVenta = (double)precioFinalReserva;
-                nuevaReserva.IdVehiculoCiudad = idVehCiudad;
-                nuevaReserva.IdCiudad = idCiudad;
-                nuevaReserva.idPais = idPais;
+                nuevaReserva.IdVehiculoCiudad = null;//idVehCiudad;
+                //nuevaReserva.IdCiudad = idCiudad;
+                //nuevaReserva.idPais = idPais;
 
                 db.Reserva.Add(nuevaReserva);
                 db.SaveChanges();
