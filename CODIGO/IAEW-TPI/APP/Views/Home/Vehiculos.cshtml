@@ -1,11 +1,4 @@
-﻿@{
-    ViewBag.Title = "About";
-}
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
-
-<p>Use this area to provide additional information.</p>
-
+﻿
 <div class="row">
     <div class="col-md-12">
         <div class="panel panel-default">
@@ -15,17 +8,37 @@
             </div>
         </div>
         <div class="panel-body" style="overflow-x:auto;">
+            @*Aca hay setear la propiedad onclick para que ejecute de nuevo el GetListadoVehiculos con el valor cargado en input*@
+            <input type="number" name="idCiudad" id="txtIDCiudad" runat="server" value="0" placeholder="0"/>
+            <button onclick="window.open('http://localhost:7118/Home/Vehiculos')">Consultar</button>
             <table id="tablaVehiculos" class="table table-striped table-bordered" cellspacing="0" width="100%">
                 <thead>
                     <tr>
-                        <th></th>
-                        <th></th>
-                        <th></th>
+                        <th>Marca</th>
+                        <th>Modelo</th>
+                        <th>Cantidad Puertas</th>
+                        <th>Puntaje</th>
+                        <th>Precio</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @*@foreach (var item in Model)
-                    { }*@
+                    @if (ViewBag.Vehiculos != null)
+                    {
+                        foreach (var vehiculo in ViewBag.Vehiculos)
+                        {
+                            <tr>
+                                <td>@vehiculo.Marca</td>
+                                <td>@vehiculo.Modelo</td>
+                                <td>@vehiculo.Puertas</td>
+                                <td>@vehiculo.Puntaje</td>
+                                <td>@vehiculo.Precio</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>No se encontraron vehiculos para esa ciudad</tr>
+                    }
                 </tbody>
             </table>
         </div>

@@ -1,0 +1,84 @@
+﻿@model APP.Models.DetalleReserva
+
+<h2>Detalle de Reserva</h2>
+
+<div>
+    <h4>DetalleReserva</h4>
+    <hr />
+    <!--FALTA AGREGAR LA LOGICA PARA QUE FUNCIONE EL BOTON CONSULTAR DETALLE-->
+    <form>
+        <label>Ingrese Codigo de Reserva</label>
+        <input type="text" name="codigoReserva" />
+        <button>Consultar Detalle</button>
+    </form>
+    @if (ViewBag.DetalleReserva != null)
+    {
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.ApellidoNombreCliente)
+            </dt>
+
+            <dd>
+                @ViewBag.DetalleReserva.ApellidoNombreCliente
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.NroDocumentoCliente)
+            </dt>
+
+            <dd>
+                @ViewBag.DetalleReserva.NroDocumentoCliente
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.FechaHoraDevolucion)
+            </dt>
+
+            <dd>
+                @ViewBag.DetalleReserva.FechaHoraDevolucion
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.FechaHoraRetiro)
+            </dt>
+
+            <dd>
+                @ViewBag.DetalleReserva.FechaHoraRetiro
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.IDVehiculoCiudad)
+            </dt>
+
+            <dd>
+                @ViewBag.DetalleReserva.IDVehiculoCiudad
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.LugarRetiro)
+            </dt>
+
+            <dd>
+                @ViewBag.DetalleReserva.LugarRetiro
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.LugarDevolucion)
+            </dt>
+
+            <dd>
+                @ViewBag.DetalleReserva.LugarDevolucion
+            </dd>
+
+        </dl>
+    }
+    else
+    {
+        <h3>No se encontro ninguna reserva con ese codigo</h3>
+    }
+
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>
