@@ -1,0 +1,366 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "TuriCor S.A. API",
+    "version": "1.0.0",
+    "title": "Simple Inventory API",
+    "contact": {
+      "email": "leoale37@gmail.com"
+    },
+    "license": {
+      "name": "Apache 2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  },
+  "tags": [
+    {
+      "name": "admins",
+      "description": "Secured Admin-only calls"
+    },
+    {
+      "name": "developers",
+      "description": "Operations available to regular developers"
+    }
+  ],
+  "paths": {
+    "/reservas/{idCliente}": {
+      "get": {
+        "summary": "Obtener listado de reservas dado un ID de cliente",
+        "tags": [
+          "reserva"
+        ],
+        "description": "Obtiene la lista de reservas",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "idCliente",
+            "in": "path",
+            "description": "ID del cliente al cual se le asocian las reservas",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "éxito",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Reserva"
+              }
+            }
+          },
+          "400": {
+            "description": "No existe el cliente"
+          },
+          "404": {
+            "description": "No tiene reservas"
+          }
+        }
+      }
+    },
+    "/reserva/{idReserva}": {
+      "get": {
+        "summary": "Consultar el detalle de una reserva dada un ID de reserva",
+        "tags": [
+          "reserva"
+        ],
+        "description": "La reserva #codigoReserva no fue encontrada",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "idReserva",
+            "in": "path",
+            "description": "ID de la reserva a buscar",
+            "required": true,
+            "type": "integer"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "éxito",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Reserva"
+              }
+            }
+          },
+          "404": {
+            "description": "Reserva no encontrada"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Eliminar una reserva dada su ID",
+        "tags": [
+          "reserva"
+        ],
+        "description": "",
+        "operationId": "deletePet",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "idReserva",
+            "in": "path",
+            "description": "ID de reserva a eliminar",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "La reserva ha sido eliminada"
+          },
+          "400": {
+            "description": "ID inválida"
+          },
+          "404": {
+            "description": "Reserva no encontrada"
+          }
+        }
+      }
+    },
+    "/reserva": {
+      "post": {
+        "summary": "Agregar una nueva reserva de vehículo",
+        "tags": [
+          "reserva"
+        ],
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "Reserva debe tener los siguientes campos",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Reserva"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Datos ingresados son invalidos"
+          }
+        }
+      }
+    },
+    "/vehiculos/{idCiudad}": {
+      "get": {
+        "summary": "Obtener listado de vehículos dado un ID de ciudad en la que se encuentra",
+        "tags": [
+          "vehiculo"
+        ],
+        "description": "Obtiene la lista de reservas",
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "idCiudad",
+            "in": "path",
+            "description": "ID de la ciudad en la cual se buscan vehículos disponibles",
+            "required": true,
+            "type": "integer",
+            "format": "int64"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "éxito",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Vehiculo"
+              }
+            }
+          },
+          "400": {
+            "description": "No existe el ID de la ciudad"
+          },
+          "404": {
+            "description": "No hay vehículo disponibles en esa ciudad"
+          }
+        }
+      }
+    },
+    "/cliente": {
+      "post": {
+        "summary": "Agregar un nuevo cliente",
+        "tags": [
+          "cliente"
+        ],
+        "description": "",
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "description": "El cliente debe tener los siguientes campos",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/Cliente"
+            }
+          }
+        ],
+        "responses": {
+          "405": {
+            "description": "Datos ingresados son invalidos"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "Reserva": {
+      "type": "object",
+      "required": [
+        "codigoReserva",
+        "fechaReserva",
+        "idCliente",
+        "idVendedor",
+        "costo",
+        "precioVenta",
+        "idVehiculoCiudad",
+        "idCiudad",
+        "idPais",
+        "id",
+        "cliente",
+        "vendedor"
+      ],
+      "properties": {
+        "codigoReserva": {
+          "type": "string",
+          "example": "Reserva1"
+        },
+        "fechaReserva": {
+          "type": "string",
+          "example": "23/06/19"
+        },
+        "idCliente": {
+          "type": "integer",
+          "example": 69470
+        },
+        "idVendedor": {
+          "type": "integer",
+          "example": 69876
+        },
+        "costo": {
+          "type": "number",
+          "example": 345.5
+        },
+        "idVehiculoCiudad": {
+          "type": "integer",
+          "example": 53940
+        },
+        "idCiudad": {
+          "type": "integer",
+          "example": 29420
+        },
+        "idPais": {
+          "type": "integer",
+          "example": 93902
+        },
+        "id": {
+          "type": "integer",
+          "example": 12
+        },
+        "cliente": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Cliente"
+          }
+        },
+        "vendedor": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/Vendedor"
+          }
+        }
+      }
+    },
+    "Cliente": {
+      "type": "object",
+      "properties": {
+        "nombre": {
+          "type": "string",
+          "example": "Alexa"
+        },
+        "apellido": {
+          "type": "string",
+          "example": "Chavez Flores"
+        },
+        "nroDocumento": {
+          "type": "integer",
+          "example": 19045654
+        },
+        "usuario": {
+          "type": "string",
+          "example": "Ale_Chavez"
+        },
+        "id": {
+          "type": "integer",
+          "example": 69470
+        }
+      }
+    },
+    "Vendedor": {
+      "additionalProperties": true,
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer",
+          "example": 69876
+        },
+        "nombre": {
+          "type": "string",
+          "example": "Juan"
+        }
+      }
+    },
+    "Vehiculo": {
+      "additionalProperties": true,
+      "type": "object",
+      "properties": {
+        "idVehiculo": {
+          "type": "integer",
+          "example": 69876
+        },
+        "tipo": {
+          "type": "string",
+          "example": "chevrolet"
+        },
+        "idciudad": {
+          "type": "string",
+          "example": 49548
+        }
+      }
+    }
+  },
+  "host": "virtserver.swaggerhub.com",
+  "basePath": "/AlexaChavez/turicor-api/1.0.0",
+  "schemes": [
+    "https",
+    "http"
+  ]
+}
