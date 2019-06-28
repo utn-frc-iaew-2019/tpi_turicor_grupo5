@@ -36,46 +36,21 @@
                                 <td>@reserva.IdVehiculoCiudad</td>
                                 <td>@reserva.IdCiudad</td>
                                 <td>@reserva.idPais</td>
+
                             </tr>
                         }
                     }
                 </tbody>
             </table>
         </div>
-    </div>
-</div>
 
-
-<!---Creacion de una Reserva. No se si va aca o en otra Vista-->
-<div>
-    <h2>Realizar Reserva</h2>
-    <form id="realizarReserva">
         <div>
-            <label>Apellido y Nombre</label>
-            <input type="text" name="ApellidoNombre" form="realizarReserva"/>
-
-            <label>DNI</label>
-            <input type="text" name="NroDocumento" form="realizarReserva"/>
-
-            <label>Fecha Retiro</label>
-            <input type="date" name="FechaRetiro" form="realizarReserva"/>
-
-            <label>Fecha Devolucion</label>
-            <input type="date" name="FechaDevolucion" form="realizarReserva"/>
-
-            <label>ID Vehiculo</label>
-            <input type="text" name="IDVehiculo" form="realizarReserva"/>
-
-            <label>Lugar Retiro</label>
-            <input type="text" name="LugarRetiro" form="realizarReserva"/>
-
-            <label>Lugar Devolucion</label>
-            <input type="text" name="LugarDevolucion" form="realizarReserva"/>
-
-            <!--FALTA AGREGAR LA LOGICA PARA QUE FUNCIONE EL BOTON RESERVAR-->
-
-            <button>Reservar</button>
+            <h2>Cancelar Reserva</h2>
+            <form id="cancelarReserva" method="post">
+                <p>Codigo de reserva:</p>
+                <input type="text" name="cancelarReserva" runat="server"/>
+                <button type="submit">Confirmar</button>
+            </form>
         </div>
-    </form>
-
+    </div>
 </div>

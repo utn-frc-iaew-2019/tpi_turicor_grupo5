@@ -1,0 +1,41 @@
+﻿@model APP.Models.DetalleReserva
+
+@{
+    ViewBag.Title = "NuevaReserva";
+}
+
+<h2>NuevaReserva</h2>
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+    <form id="realizarReserva" method="post" >
+        <div>
+            <label>Apellido y Nombre</label>
+            <input type="text" name="ApellidoNombre" form="realizarReserva" runat="server" /><br /><p />
+            
+            <label>DNI</label>
+            <input type="text" name="NroDocumento" form="realizarReserva" runat="server"/><br /><p />
+
+            <label>Fecha Retiro</label>
+            <input type="date" name="FechaRetiro" form="realizarReserva" runat="server"/><br /><p />
+
+            <label>Fecha Devolucion</label>
+            <input type="date" name="FechaDevolucion" form="realizarReserva" runat="server"/><br /><p />
+
+            <label>ID Vehiculo</label>
+            <input type="text" name="IDVehiculo" form="realizarReserva" runat="server"/><br /><p />
+
+            <label>Lugar Retiro</label>
+            <input type="text" name="LugarRetiro" form="realizarReserva" runat="server"/><br /><p />
+
+            <label>Lugar Devolucion</label>
+            <input type="text" name="LugarDevolucion" form="realizarReserva" runat="server"/><br /><p />
+
+            <button type="submit">Reservar</button>
+        </div>
+    </form>
+    
+}

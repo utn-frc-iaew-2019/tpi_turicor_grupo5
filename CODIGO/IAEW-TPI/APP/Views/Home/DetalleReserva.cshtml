@@ -5,11 +5,10 @@
 <div>
     <h4>DetalleReserva</h4>
     <hr />
-    <!--FALTA AGREGAR LA LOGICA PARA QUE FUNCIONE EL BOTON CONSULTAR DETALLE-->
-    <form>
+    <form id="detalleReserva" method="post">
         <label>Ingrese Codigo de Reserva</label>
         <input type="text" name="codigoReserva" />
-        <button>Consultar Detalle</button>
+        <button type="submit">Consultar Detalle</button>
     </form>
     @if (ViewBag.DetalleReserva != null)
     {
@@ -74,11 +73,7 @@
     }
     else
     {
-        <h3>No se encontro ninguna reserva con ese codigo</h3>
+        <p>No se encontro ninguna reserva con ese codigo</p>
     }
 
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>
