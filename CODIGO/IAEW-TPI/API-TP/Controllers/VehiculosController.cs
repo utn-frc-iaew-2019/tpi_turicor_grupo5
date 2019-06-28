@@ -34,12 +34,13 @@ namespace API_TP.Controllers
                     decimal precio = item.PrecioPorDia;
                     decimal precioFinal = precio * (decimal)1.2;
                     item.PrecioPorDia = precioFinal;
+                    
 
-                    vehiculos.Add(new {Marca = ""+item.Marca, Modelo = ""+item.Modelo, Puertas = ""+item.CantidadPuertas,
+                    //No se por que no reconoce o agrega el ID del Vehiculo
+                    vehiculos.Add(new {Id = ""+item.Id, Marca = ""+item.Marca, Modelo = ""+item.Modelo, Puertas = ""+item.CantidadPuertas,
                     Puntaje = ""+item.Puntaje, Precio = ""+precioFinal});
                 }
                 return Json(vehiculos);
-                //return JsonResult(vehiculos);
             }
             catch (Exception ex)
             {
