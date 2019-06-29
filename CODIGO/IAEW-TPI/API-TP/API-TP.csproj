@@ -175,6 +175,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>DBContext.edmx</DependentUpon>
     </Compile>
+    <Compile Include="Models\DetalleReserva.cs" />
     <Compile Include="Models\Reserva.cs">
       <DependentUpon>DBContext.tt</DependentUpon>
     </Compile>

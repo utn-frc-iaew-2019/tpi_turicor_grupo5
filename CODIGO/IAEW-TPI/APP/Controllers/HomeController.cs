@@ -12,7 +12,7 @@ using System.Runtime.Serialization.Formatters.Binary;
 using System.Text;
 using System.Threading.Tasks;
 using System.Web;
-using System.Web.Http;
+//using System.Web.Http;
 using System.Web.Mvc;
 
 namespace APP.Controllers
@@ -23,6 +23,15 @@ namespace APP.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult NuevaReserva(int? id)
+        {
+            //Se deberia hacer tiro a la api para obtener datos del modelo de un vehiculo
+            DetalleReserva dr = new DetalleReserva();
+            dr.IDVehiculoCiudad = (int)id;
+            ViewBag.Title = "Nueva Reserva";
+            return View(dr);
         }
 
         public ActionResult Vehiculos()
@@ -279,56 +288,56 @@ namespace APP.Controllers
 
         }
 
-        public ActionResult NuevaReserva()
-        {
+        //public ActionResult NuevaReserva()
+        //{
             
-            DetalleReserva reserva = new DetalleReserva();
+        //    DetalleReserva reserva = new DetalleReserva();
 
-            string apenom = Request.Form["ApellidoNombre"];
-            if (apenom != null)
-            {
-                reserva.ApellidoNombreCliente = apenom;
-            }
+        //    string apenom = Request.Form["ApellidoNombre"];
+        //    if (apenom != null)
+        //    {
+        //        reserva.ApellidoNombreCliente = apenom;
+        //    }
 
-            string doc = Request.Form["NroDocumento"];
-            if (doc != null)
-            {
-                reserva.NroDocumentoCliente = doc;
-            }
+        //    string doc = Request.Form["NroDocumento"];
+        //    if (doc != null)
+        //    {
+        //        reserva.NroDocumentoCliente = doc;
+        //    }
 
-            string fechaRetiro = Request.Form["FechaRetiro"];
-            if (fechaRetiro != null)
-            {
-                reserva.FechaHoraRetiro = DateTime.Parse(fechaRetiro);
-            }
+        //    string fechaRetiro = Request.Form["FechaRetiro"];
+        //    if (fechaRetiro != null)
+        //    {
+        //        reserva.FechaHoraRetiro = DateTime.Parse(fechaRetiro);
+        //    }
 
-            string fechaDevolucion = Request.Form["FechaDevolucion"];
-            if (fechaDevolucion != null)
-            {
-                reserva.FechaHoraDevolucion = DateTime.Parse(fechaDevolucion);
-            }
+        //    string fechaDevolucion = Request.Form["FechaDevolucion"];
+        //    if (fechaDevolucion != null)
+        //    {
+        //        reserva.FechaHoraDevolucion = DateTime.Parse(fechaDevolucion);
+        //    }
 
-            string id = Request.Form["IDVehiculo"];
-            if (id != null)
-            {
-                reserva.IDVehiculoCiudad = int.Parse(id);
-            }
+        //    string id = Request.Form["IDVehiculo"];
+        //    if (id != null)
+        //    {
+        //        reserva.IDVehiculoCiudad = int.Parse(id);
+        //    }
 
-            string lugarRetiro = Request.Form["LugarRetiro"];
-            if (lugarRetiro != null)
-            {
-                reserva.LugarRetiro = lugarRetiro;
-            }
+        //    string lugarRetiro = Request.Form["LugarRetiro"];
+        //    if (lugarRetiro != null)
+        //    {
+        //        reserva.LugarRetiro = lugarRetiro;
+        //    }
 
-            string lugarDevolucion = Request.Form["LugarDevolucion"];
-            if (lugarDevolucion != null)
-            {
-                reserva.LugarDevolucion = lugarDevolucion;
-            }
+        //    string lugarDevolucion = Request.Form["LugarDevolucion"];
+        //    if (lugarDevolucion != null)
+        //    {
+        //        reserva.LugarDevolucion = lugarDevolucion;
+        //    }
 
-            this.CrearReserva(reserva);
-            return View();
-        }
+        //    this.CrearReserva(reserva);
+        //    return View();
+        //}
 
 
         public byte[] ToByteArray<T>(T obj)

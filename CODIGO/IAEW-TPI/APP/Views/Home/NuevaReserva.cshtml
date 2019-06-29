@@ -1,41 +1,69 @@
-﻿@model APP.Models.DetalleReserva
-
-@{
-    ViewBag.Title = "NuevaReserva";
-}
-
-<h2>NuevaReserva</h2>
+﻿@using APP.Models
+@model APP.Models.DetalleReserva
 
 
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
+<h2></h2>
 
-    <form id="realizarReserva" method="post" >
-        <div>
-            <label>Apellido y Nombre</label>
-            <input type="text" name="ApellidoNombre" form="realizarReserva" runat="server" /><br /><p />
-            
-            <label>DNI</label>
-            <input type="text" name="NroDocumento" form="realizarReserva" runat="server"/><br /><p />
-
-            <label>Fecha Retiro</label>
-            <input type="date" name="FechaRetiro" form="realizarReserva" runat="server"/><br /><p />
-
-            <label>Fecha Devolucion</label>
-            <input type="date" name="FechaDevolucion" form="realizarReserva" runat="server"/><br /><p />
-
-            <label>ID Vehiculo</label>
-            <input type="text" name="IDVehiculo" form="realizarReserva" runat="server"/><br /><p />
-
-            <label>Lugar Retiro</label>
-            <input type="text" name="LugarRetiro" form="realizarReserva" runat="server"/><br /><p />
-
-            <label>Lugar Devolucion</label>
-            <input type="text" name="LugarDevolucion" form="realizarReserva" runat="server"/><br /><p />
-
-            <button type="submit">Reservar</button>
+<div class="panel panel-default">
+    <div class="panel-heading">
+        <h3 class="panel-title">Nueva Reserva</h3>
+    </div>
+    <div class="panel-body form-horizontal">
+        <div class="form-group" style="padding-left:100px; padding-top:15px;">
+            <label for="ApellidoNombre" class="col-sm-2 control-label">Apellido y Nombre</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="txtNombreApellido" name="txtNombreApellido" placeholder="">
+            </div>
         </div>
-    </form>
-    
+        <div class="form-group" style="padding-left:100px; padding-top:15px;">
+            <label for="dni" class="col-sm-2 control-label">Documento</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="txtDocumento" name="txtDocumento" placeholder="">
+            </div>
+        </div>
+        <div class="form-group" style="padding-left:100px; padding-top:15px;">
+            <label for="fechaRetiro" class="col-sm-2 control-label">Fecha Retiro</label>
+            <div class="col-sm-8">
+                <input type="date" class="form-control" id="txtFechaRetiro" name="txtFechaRetiro" placeholder="">
+            </div>
+        </div>
+        <div class="form-group" style="padding-left:100px; padding-top:15px;">
+            <label for="fechaDevolucion" class="col-sm-2 control-label">Fecha Devolución</label>
+            <div class="col-sm-8">
+                <input type="date" class="form-control" id="txtFechaDevolucion" name="txtFechaDevolucion" placeholder="">
+            </div>
+        </div>
+        <div class="form-group" style="padding-left:100px; padding-top:15px;">
+            <label for="IdVehiculo" class="col-sm-2 control-label">Vehiculo</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="txtVehiculo" name="txtVehiculo" placeholder="@Model.IDVehiculoCiudad">
+            </div>
+        </div>
+        <div class="form-group" style="padding-left:100px; padding-top:15px;">
+            <label for="LugarRetiro" class="col-sm-2 control-label">Lugar de Retiro</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="txtLugarRetiro" name="txtLugarRetiro" placeholder="">
+            </div>
+        </div>
+        <div class="form-group" style="padding-left:100px; padding-top:15px;">
+            <label for="LugarDevolucion" class="col-sm-2 control-label">Lugar de Devolución</label>
+            <div class="col-sm-8">
+                <input type="text" class="form-control" id="txtLugarDevolucion" name="txtLugarDevolucion" placeholder="">
+            </div>
+        </div>
+
+        <div class="form-group" style="padding-top:15px;">
+            <div class="col-sm-offset-5 col-sm-2" style="padding-right:0px;text-align:center;">
+                <button class="ladda-button btn btn-primary submitFormSaveUser" onclick="GuardarUsuarioInterno()" id="guardarUsuarioInterno" type="button" style="background-color:#3c5d21;" data-style="zoom-out"><span class="ladda-label"> Reservar <i class="fa fa-paper-plane"></i></span><span class="ladda-spinner"></span></button>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts{
+
+    <script></script>
+
+
 }
+
