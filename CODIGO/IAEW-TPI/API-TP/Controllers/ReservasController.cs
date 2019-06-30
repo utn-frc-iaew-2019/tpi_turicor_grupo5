@@ -13,25 +13,62 @@ namespace API_TP.Controllers
     {
         private Entities1 db = new Entities1();
 
-        //[HttpGet]
-        //public IHttpActionResult ObtenerCiudad(int id)
-        //{
-        //    try
-        //    {
-        //        var client = new ServiceReference1.WCFReservaVehiculosClient();
-        //        var credentials = Credenciales();
+        [HttpGet]
+        [Route("api/Reservas/Paises")]
+        public IHttpActionResult ObtenerPaises()
+        {
+            //TIRO EN POSTMAN: http://localhost:26812/api/Reservas/Paises
+            try
+            {
+                var client = new ServiceReference1.WCFReservaVehiculosClient();
+                var credentials = Credenciales();
 
-        //        var request = new ServiceReference1.ConsultarCiudadesRequest();
-        //        request.IdPais = id;
-        //        var valor = client.ConsultarCiudades(credentials, request);
+                var valor = client.ConsultarPaises(credentials);
 
-        //        return Ok(valor);
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return NotFound();
-        //    }
-        //}
+                List<object> Paises = new List<object>();
+
+                foreach (var pais in valor.Paises)
+                {
+                    Paises.Add(new { Id = pais.Id, Nombre = pais.Nombre });
+                }
+
+                return Json(Paises);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+        }
+
+
+        [HttpGet]
+        public IHttpActionResult ObtenerCiudad(int id)
+        {
+            try
+            {
+                var client = new ServiceReference1.WCFReservaVehiculosClient();
+                var credentials = Credenciales();
+
+                var request = new ServiceReference1.ConsultarCiudadesRequest();
+                request.IdPais = (int)id;
+                var valor = client.ConsultarCiudades(credentials, request);
+
+                List<object> Ciudades = new List<object>();
+
+                foreach (var ciudad in valor.Ciudades)
+                {
+                    Ciudades.Add(new { Id = ciudad.Id, Nombre = ciudad.Nombre });
+                }
+
+                return Json(Ciudades);
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+        }
+
+        
 
         [HttpGet]
         //Equivale a Consultar el Detalle de una Reserva

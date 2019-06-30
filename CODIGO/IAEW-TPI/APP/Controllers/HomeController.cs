@@ -36,18 +36,178 @@ namespace APP.Controllers
 
         public ActionResult Vehiculos()
         {
-            string idCiudad = Request.Form["idCiudad"];
-            if (idCiudad != null)
+            try
             {
-                ViewBag.idCiudad = idCiudad;
-                GetListadoVehiculos(int.Parse(idCiudad));
+                //http://localhost:26812/api/Reservas/Paises
+
+                //BUSCAMOS PAISES
+                //Inicializamos el objeto WebRequest
+                var req = WebRequest.Create(@"http://localhost:26812/api/Reservas/Paises");
+
+                //Indicamos el método a utilizar
+                req.Method = "GET";
+                //Definimos que el contenido del cuerpo del request tiene el formato Json
+                req.ContentType = "application/json";
+
+                //Realizamos la llamada a la API de la siguiente forma.
+                var resp = req.GetResponse() as HttpWebResponse;
+                if (resp != null && resp.StatusCode == HttpStatusCode.OK)
+                {
+                    using (var respStream = resp.GetResponseStream())
+                    {
+                        if (respStream != null)
+                        {
+                            //Obtenemos de la siguiente el cuerpo de la respuesta
+                            var reader = new StreamReader(respStream, Encoding.UTF8);
+                            string result = reader.ReadToEnd();
+
+                            //El cuerpo en formato Json lo deserealizamos en el objeto usuario
+                            List<Pais> listResult = JsonConvert.DeserializeObject<List<Pais>>(result);
+
+                            List<SelectListItem> ListaPaises = new List<SelectListItem>();
+
+                            //SelectListItem it = new SelectListItem();
+                            //it.Text = "Seleccione";
+                            //it.Value = "0";
+                            //ListaPaises.Add(it);
+
+
+                            foreach (var pais in listResult.OrderBy(e => e.Nombre))
+                            {
+                                SelectListItem item = new SelectListItem();
+                                item.Text = pais.Nombre;
+                                item.Value = pais.Id;
+
+                                ListaPaises.Add(item);
+                            }
+
+                            ViewBag.Paises = ListaPaises;
+
+                            try
+                            {
+                                //BUSCAMOS CIUDADES DE PAIS SELECCIONADO
+                                //Inicializamos el objeto WebRequest
+                                var req1 = WebRequest.Create(@"http://localhost:26812/api/Reservas/ObtenerCiudad?id=" + ListaPaises.First().Value);
+
+                                //Indicamos el método a utilizar
+                                req1.Method = "GET";
+                                //Definimos que el contenido del cuerpo del request tiene el formato Json
+                                req1.ContentType = "application/json";
+
+                                //Realizamos la llamada a la API de la siguiente forma.
+                                var resp1 = req1.GetResponse() as HttpWebResponse;
+                                if (resp1 != null && resp1.StatusCode == HttpStatusCode.OK)
+                                {
+                                    using (var respStream1 = resp1.GetResponseStream())
+                                    {
+                                        if (respStream1 != null)
+                                        {
+                                            //Obtenemos de la siguiente el cuerpo de la respuesta
+                                            var reader1 = new StreamReader(respStream1, Encoding.UTF8);
+                                            string result1 = reader1.ReadToEnd();
+
+                                            //El cuerpo en formato Json lo deserealizamos en el objeto usuario
+                                            List<Ciudad> listResult1 = JsonConvert.DeserializeObject<List<Ciudad>>(result1);
+
+                                            List<SelectListItem> ListaCiudades = new List<SelectListItem>();
+
+                                            //SelectListItem it1 = new SelectListItem();
+                                            //it1.Text = "Seleccione";
+                                            //it1.Value = "0";
+                                            //ListaCiudades.Add(it1);
+
+                                            foreach (var ciudad in listResult1.OrderBy(e => e.Nombre))
+                                            {
+                                                SelectListItem item = new SelectListItem();
+                                                item.Text = ciudad.Nombre;
+                                                item.Value = ciudad.Id;
+
+                                                ListaCiudades.Add(item);
+                                            }
+
+                                            ViewBag.Ciudades = ListaCiudades;
+                                            return View();
+                                        }
+                                        return View();
+                                    }
+                                    //return View();
+                                }
+                                else
+                                {
+                                    Console.WriteLine("Status Code: {0}, Status Description: {1}", resp1.StatusCode, resp1.StatusDescription);
+                                    return View();
+                                }
+
+                            }
+                            catch (Exception ex)
+                            {
+                                Console.WriteLine(ex.ToString());
+                                return null;
+                            }
+                        }
+                        return View();
+                    }
+                    //return View();
+                }
+                else
+                {
+                    Console.WriteLine("Status Code: {0}, Status Description: {1}", resp.StatusCode, resp.StatusDescription);
+                    return View();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                GetListadoVehiculos(1);
+                Console.WriteLine(ex.ToString());
+                return null;
+            }
+        }
+
+        public JsonResult ObtenerCiudadesPorPais(int idPais)
+        {
+            try
+            {
+                //BUSCAMOS CIUDADES DE PAIS SELECCIONADO
+                //Inicializamos el objeto WebRequest
+                var req1 = WebRequest.Create(@"http://localhost:26812/api/Reservas/ObtenerCiudad?id=" + idPais);
+
+                //Indicamos el método a utilizar
+                req1.Method = "GET";
+                //Definimos que el contenido del cuerpo del request tiene el formato Json
+                req1.ContentType = "application/json";
+
+                //Realizamos la llamada a la API de la siguiente forma.
+                var resp1 = req1.GetResponse() as HttpWebResponse;
+                if (resp1 != null && resp1.StatusCode == HttpStatusCode.OK)
+                {
+                    using (var respStream1 = resp1.GetResponseStream())
+                    {
+                        if (respStream1 != null)
+                        {
+                            //Obtenemos de la siguiente el cuerpo de la respuesta
+                            var reader1 = new StreamReader(respStream1, Encoding.UTF8);
+                            string result1 = reader1.ReadToEnd();
+
+                            //El cuerpo en formato Json lo deserealizamos en el objeto usuario
+                            List<Ciudad> listResult1 = JsonConvert.DeserializeObject<List<Ciudad>>(result1);
+                            
+                            return Json(new { listado = listResult1 }, JsonRequestBehavior.AllowGet);
+                        }
+                        return null;
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Status Code: {0}, Status Description: {1}", resp1.StatusCode, resp1.StatusDescription);
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return null;
             }
 
-            return View();
         }
 
         public ActionResult GetListadoVehiculos(int idCiudad)
@@ -77,8 +237,10 @@ namespace APP.Controllers
                             //El cuerpo en formato Json lo deserealizamos en el objeto usuario
                             List<Vehiculos> listResult = JsonConvert.DeserializeObject<List<Vehiculos>>(result);
 
-                            ViewBag.Vehiculos = listResult;
-                            return View();
+                            return Json(new { listado = listResult }, JsonRequestBehavior.AllowGet);
+
+                            //ViewBag.Vehiculos = listResult;
+                            //return View();
                         }
                         return View();
                     }

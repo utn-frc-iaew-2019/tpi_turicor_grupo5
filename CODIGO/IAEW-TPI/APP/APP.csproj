@@ -180,10 +180,12 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
+    <Compile Include="Models\Ciudad.cs" />
     <Compile Include="Models\DetalleReserva.cs" />
     <Compile Include="Models\GooglePlusAccessToken.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Pais.cs" />
     <Compile Include="Models\Reserva.cs" />
     <Compile Include="Models\Vehiculos.cs" />
     <Compile Include="obj\Debug\TemporaryGeneratedFile_036C0B5B-1481-4323-8D20-8F5ADCB23D92.cs" />
