@@ -7,10 +7,10 @@
             </div>
         </div>
         <div class="panel-body" style="overflow-x:auto;">
-            <form id="vehiculo" method="post">
+            @*<form id="vehiculo" method="post">
                 <input type="number" name="idCiudad" id="txtIDCiudad" runat="server" placeholder="ID Ciudad" value="@ViewBag.idCiudad" />
                 <button type="submit">Consultar</button>
-            </form>
+            </form>*@
 
             <div class="row" @*style="height:50px;"*@>
                 <div class="form-group col-sm-6">
@@ -72,7 +72,7 @@
 </div>
 
 @section Scripts{
-    <script>
+<script>
         $(document).ready(function () {
             cargarVehiculosCiudad();
         });
@@ -105,7 +105,7 @@
                     //Lo que debe pasar pasados 1 segundo (mil milisegundos)
                     cargarVehiculosCiudad();
                 }, 1000);
-            
+
         }
 
         function cargarVehiculosCiudad() {
@@ -126,6 +126,8 @@
                                 $("#TablaVehiculos").empty();
                                 $.each(data.listado, function (i, item) {
                                     var html = "";
+                                    var url = window.location.protocol + "//" + window.location.host + "/Home/NuevaReserva/" + item.Id;
+                                    var html = "";
                                     html += "<tr>";
                                     html += "<td>";
                                     html += item.Marca;
@@ -143,7 +145,8 @@
                                     html += item.Precio;
                                     html += "</td>";
                                     html += "<td align='center'>";
-                                    //FALTA BOTON DE RESERVA
+                                    html += "<a href='" + url + "' class='btn btn-success btn-sm' style='color: white'> RESERVAR <i class='fas fa-eye'></i></a>";
+                                    //agregarBotonReserva(item.Id);
                                     html += "</td>";
                                     html += "</tr>";
 
@@ -153,7 +156,14 @@
                         }
                     }
                 });
-
         }
-    </script>
+
+    //function agregarBotonReserva(idVehiculo) {
+    //    var html = "";
+    //    var url = window.location.protocol + "//" + window.location.host + "/Home/NuevaReserva/" + idVehiculo;
+    //    html += "<a href='"+url+"' class='btn btn - success btn - sm' style='color: white'> RESERVAR <i class='fas fa - eye'></i></a>";
+    //    html = html.replace("idVehiculo", idVehiculo).replace("url",url);
+    //    $("#TablaVehiculos").append(html);
+    //}
+</script>
 }
