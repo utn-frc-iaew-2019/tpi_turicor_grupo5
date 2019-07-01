@@ -179,8 +179,8 @@ namespace API_TP.Controllers
                 nuevaReserva.Costo = (double)costoReserva;
                 nuevaReserva.PrecioVenta = (double)precioFinalReserva;
                 nuevaReserva.IdVehiculoCiudad = reserva.IDVehiculoCiudad;
-                //nuevaReserva.IdCiudad = idCiudad;
-                //nuevaReserva.idPais = idPais;
+                nuevaReserva.IdCiudad = valor.Reserva.VehiculoPorCiudadEntity.CiudadEntity.Id;
+                nuevaReserva.idPais = valor.Reserva.VehiculoPorCiudadEntity.CiudadEntity.PaisEntity.Id;
 
                 db.Reserva.Add(nuevaReserva);
                 db.SaveChanges();

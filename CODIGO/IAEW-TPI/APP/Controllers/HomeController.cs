@@ -259,6 +259,75 @@ namespace APP.Controllers
             }
         }
 
+        public ActionResult Reservar(string apeynom, string doc, DateTime fechaRetiro, DateTime fechaDevolucion, int idVehiculo, string lugarRetiro, string lugarDevolucion)
+        {
+            try
+            {
+                DetalleReserva dr = new DetalleReserva();
+                dr.ApellidoNombreCliente = apeynom;
+                dr.NroDocumentoCliente = doc;
+                dr.FechaHoraRetiro = fechaRetiro;
+                dr.FechaHoraDevolucion = fechaDevolucion;
+                dr.IDVehiculoCiudad = idVehiculo;
+                dr.LugarRetiro = lugarRetiro;
+                dr.LugarDevolucion = lugarDevolucion;
+
+                //Inicializamos el objeto WebRequest
+                var req = WebRequest.Create(@"http://localhost:26812/api/Reservas/ReservarVehiculo");
+
+                //Indicamos el método a utilizar
+                req.Method = "POST";
+                //Definimos que el contenido del cuerpo del request tiene el formato Json
+                req.ContentType = "application/json";
+
+                //Escribimos sobre el cuerpo del request los datos del usuario en formato Json
+                using (var streamWriter = new StreamWriter(req.GetRequestStream()))
+                {
+                    //Serializamos el objeto usuario en un string con formato Json
+                    var jsonData = JsonConvert.SerializeObject(dr);
+
+                    streamWriter.Write(jsonData);
+                    streamWriter.Flush();
+                    streamWriter.Close();
+                }
+
+                //Realizamos la llamada a la API de la siguiente forma.
+                var resp = req.GetResponse() as HttpWebResponse;
+
+                //El protocolo HTTP define un cambpo Status que indica el estado de la peticion.
+                //StatusCode = 200 (OK), indica que la llamada se proceso correctamente.
+                //Cualquier otro caso corresponde a un error.
+                if (resp != null && resp.StatusCode == HttpStatusCode.OK)
+                {
+                    using (var respStream = resp.GetResponseStream())
+                    {
+                        if (respStream != null)
+                        {
+                            //Obtenemos de la siguiente el cuerpo de la respuesta
+                            var reader = new StreamReader(respStream, Encoding.UTF8);
+                            string result = reader.ReadToEnd();
+
+                            //El cuerpo en formato Json lo deserealizamos en el objeto usuario
+                            Reserva res = JsonConvert.DeserializeObject<Reserva>(result);
+
+                            return Json(new { reserva = res }, JsonRequestBehavior.AllowGet);
+                        }
+                    }
+                    return null;
+                }
+                else
+                {
+                    Console.WriteLine("Status Code: {0}, Status Description: {1}", resp.StatusCode, resp.StatusDescription);
+                    return null;
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+                return null;
+            }
+        }
+
 
         public ActionResult Reservas()
         {

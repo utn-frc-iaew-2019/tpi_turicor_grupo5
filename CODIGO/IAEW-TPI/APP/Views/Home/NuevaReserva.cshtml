@@ -36,7 +36,7 @@
         <div class="form-group" style="padding-left:100px; padding-top:15px;">
             <label for="IdVehiculo" class="col-sm-2 control-label">Vehiculo</label>
             <div class="col-sm-8">
-                <input type="text" class="form-control" id="txtVehiculo" name="txtVehiculo" placeholder="@Model.IDVehiculoCiudad">
+                <input type="text" class="form-control" id="txtVehiculo" name="txtVehiculo" disabled="disabled" value="@Model.IDVehiculoCiudad">
             </div>
         </div>
         <div class="form-group" style="padding-left:100px; padding-top:15px;">
@@ -54,16 +54,67 @@
 
         <div class="form-group" style="padding-top:15px;">
             <div class="col-sm-offset-5 col-sm-2" style="padding-right:0px;text-align:center;">
-                <button class="ladda-button btn btn-primary submitFormSaveUser" onclick="GuardarUsuarioInterno()" id="guardarUsuarioInterno" type="button" style="background-color:#3c5d21;" data-style="zoom-out"><span class="ladda-label"> Reservar <i class="fa fa-paper-plane"></i></span><span class="ladda-spinner"></span></button>
+                <button class="ladda-button btn btn-primary" onclick="GuardarReserva()" id="btnReservar" type="button" style="background-color:#3c5d21;" data-style="zoom-out"> Reservar </button>
+                @*<button class="ladda-button btn btn-primary" onclick="GuardarReserva()" id="btnReservar" type="button" style="background-color:#3c5d21;" data-style="zoom-out"><span class="ladda-label"> Reservar <i class="fa fa-paper-plane"></i></span><span class="ladda-spinner"></span></button>*@
             </div>
         </div>
     </div>
 </div>
 
+
 @section Scripts{
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        function GuardarReserva() {
+            var apellidoNombre = $("#txtNombreApellido").val();
+            var dni = $("#txtDocumento").val();
+            var fechaRetiro = $("#txtFechaRetiro").val();
+            var fechaDevolucion = $("#txtFechaDevolucion").val();
+            var idVehiculo = $("#txtVehiculo").val();
+            var txtLugarRetiro = $("#txtLugarRetiro").val();
+            var txtLugarDevolucion = $("#txtLugarDevolucion").val();
+            $.ajax(
+                {
+                    type: 'GET',
+                    contentType: 'application/json; charset=utf-8',
+                    dataType: 'json',
+                    url: window.location.protocol + "//" + window.location.host + "/Home/Reservar",
+                    //url: "Url.Action("ObtenerCiudadesPorPais", "Home")",
+                    data: {
+                        apeynom: apellidoNombre,
+                        doc: dni,
+                        fechaRetiro: fechaRetiro,
+                        fechaDevolucion: fechaDevolucion,
+                        idVehiculo: idVehiculo,
+                        lugarRetiro: txtLugarRetiro,
+                        lugarDevolucion: txtLugarDevolucion
+                    },
+                    success: function (data) {
+                        if (data != null) {
+                            //data.reserva
+                            swal({
+                                title: "Reserva Registrada",
+                                type: "success",
+                                text: "La Reserva se ha registrado correctamente. El detalle es: " + data.reserva
+                            },
+                                function () {
+                                    window.location.href = "/Home/Vehiculos";
+                                });
+                        }
+                        else {
+                            swal({
+                                title: "Error",
+                                text: "No se ha podido registrar la reserva en este momento. Por favor, intente mas tarde",
+                                type: "error",
+                            });
+                        }
+                    }
+                });
 
-    <script></script>
+
+        }
 
 
+    </script>
 }
 
