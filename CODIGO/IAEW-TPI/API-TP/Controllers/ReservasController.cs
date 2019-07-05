@@ -1,4 +1,5 @@
 ﻿using API_TP.Models;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -68,9 +69,8 @@ namespace API_TP.Controllers
             }
         }
 
-        
-
         [HttpGet]
+        [Route("api/Reservas/ConsultarReserva")]
         //Equivale a Consultar el Detalle de una Reserva
         public IHttpActionResult ConsultarReserva([FromUri] string codigo)
         {
@@ -83,7 +83,12 @@ namespace API_TP.Controllers
                 request.CodigoReserva = codigo;
                 var valor = client.ConsultarReserva(credentials, request);
 
-                return Ok(valor);
+                return Ok(new { ApellidoNombreCliente = valor.Reserva.ApellidoNombreCliente, CodigoReserva = valor.Reserva.CodigoReserva,
+                Estado = valor.Reserva.Estado, FechaCancelacion = valor.Reserva.FechaCancelacion,
+                FechaHoraDevolucion = valor.Reserva.FechaHoraDevolucion, FechaHoraRetiro = valor.Reserva.FechaHoraRetiro,
+                FechaReserva = valor.Reserva.FechaReserva, Id = valor.Reserva.Id, LugarDevolucion = valor.Reserva.LugarDevolucion,
+                LugarRetiro = valor.Reserva.LugarRetiro, NroDocumentoCliente = valor.Reserva.NroDocumentoCliente,
+                TotalReserva = valor.Reserva.TotalReserva});
             }
             catch (Exception ex)
             {
@@ -94,15 +99,24 @@ namespace API_TP.Controllers
         ///cliente/idcliente/reservas
                
         [HttpGet]
-        public IHttpActionResult ListadoReservas(Cliente cliente)
+        [Route("api/Reservas/Listado")]
+        public IHttpActionResult ListadoReservas(int idCliente)
         {
             try
             {
-                List<Reserva> reservas = db.Reserva.Where(x => x.FechaReserva > DateTime.Now && cliente.Id== x.IdCliente).ToList();
+                List<Reserva> reservas = db.Reserva.Where(x => x.IdCliente == idCliente).ToList();
+                //DateTime.Now.CompareTo(x.FechaReserva.ToString()) != 1 &&-
+                List<object> ReservasDeUsuario = new List<object>();
 
-                var json = new JavaScriptSerializer().Serialize(reservas);
+                foreach (var item in reservas)
+                {
+                    ReservasDeUsuario.Add(new { CodigoReserva = item.CodigoReserva, FechaReserva = item.FechaReserva,
+                    IdCliente = item.IdCliente, IdVendedor = item.IdVendedor, Costo = item.Costo,
+                    PrecioVenta = item.PrecioVenta, IdVehiculoCiudad = item.IdVehiculoCiudad, IdCiudad = item.IdCiudad,
+                    idPais = item.idPais, Id = item.Id});
+                }
 
-                return Ok(json);
+                return Ok(ReservasDeUsuario);
             }
             catch (Exception ex)
             {
@@ -171,6 +185,7 @@ namespace API_TP.Controllers
                 string codigoReserva = valor.Reserva.CodigoReserva;
 
                 Reserva nuevaReserva = new Reserva();
+                nuevaReserva.IdCliente = reserva.IdUsuario;
                 nuevaReserva.CodigoReserva = codigoReserva;
                 nuevaReserva.FechaReserva = reserva.FechaHoraRetiro;
 
@@ -179,8 +194,8 @@ namespace API_TP.Controllers
                 nuevaReserva.Costo = (double)costoReserva;
                 nuevaReserva.PrecioVenta = (double)precioFinalReserva;
                 nuevaReserva.IdVehiculoCiudad = reserva.IDVehiculoCiudad;
-                nuevaReserva.IdCiudad = valor.Reserva.VehiculoPorCiudadEntity.CiudadEntity.Id;
-                nuevaReserva.idPais = valor.Reserva.VehiculoPorCiudadEntity.CiudadEntity.PaisEntity.Id;
+                nuevaReserva.IdCiudad = valor.Reserva.VehiculoPorCiudadEntity.CiudadId;
+                //nuevaReserva.idPais = valor.Reserva.VehiculoPorCiudadEntity;
 
                 db.Reserva.Add(nuevaReserva);
                 db.SaveChanges();

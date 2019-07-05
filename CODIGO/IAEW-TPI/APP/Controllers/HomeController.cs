@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -30,6 +31,7 @@ namespace APP.Controllers
             //Se deberia hacer tiro a la api para obtener datos del modelo de un vehiculo
             DetalleReserva dr = new DetalleReserva();
             dr.IDVehiculoCiudad = (int)id;
+            ViewBag.IdUser = System.Web.HttpContext.Current.Session["sessionIdUser"];
             ViewBag.Title = "Nueva Reserva";
             return View(dr);
         }
@@ -259,11 +261,12 @@ namespace APP.Controllers
             }
         }
 
-        public ActionResult Reservar(string apeynom, string doc, DateTime fechaRetiro, DateTime fechaDevolucion, int idVehiculo, string lugarRetiro, string lugarDevolucion)
+        public ActionResult Reservar(int idUsuario, string apeynom, string doc, DateTime fechaRetiro, DateTime fechaDevolucion, int idVehiculo, string lugarRetiro, string lugarDevolucion)
         {
             try
             {
                 DetalleReserva dr = new DetalleReserva();
+                dr.IdUsuario = idUsuario;
                 dr.ApellidoNombreCliente = apeynom;
                 dr.NroDocumentoCliente = doc;
                 dr.FechaHoraRetiro = fechaRetiro;
@@ -340,7 +343,8 @@ namespace APP.Controllers
         {
             try
             {
-                var req = WebRequest.Create(@"http://localhost:26812/api/Reservas/ListadoReservas");
+                int idUsuario = (int)System.Web.HttpContext.Current.Session["sessionIdUser"];
+                var req = WebRequest.Create(@"http://localhost:26812/api/Reservas/Listado?idCliente="+idUsuario);
 
                 req.Method = "GET";
                 req.ContentType = "application/json";
@@ -380,13 +384,13 @@ namespace APP.Controllers
 
 
 
-        public ActionResult DetalleReserva()
+        public ActionResult DetalleReserva(string codigo)
         {
 
-            string codigoReserva = Request.Form["codigoReserva"];
-            if (codigoReserva != null)
+            //string codigoReserva = Request.Form["codigoReserva"];
+            if (codigo != null)
             {
-                this.GetDetalleReserva(codigoReserva);
+                this.GetDetalleReserva(codigo);
             }
             else
             {
@@ -414,8 +418,9 @@ namespace APP.Controllers
                             var reader = new StreamReader(respStream, Encoding.UTF8);
                             string result = reader.ReadToEnd();
 
-                            var reserva = JsonConvert.DeserializeObject<Reserva>(result);
-
+                            var reserva = JsonConvert.DeserializeObject<ConsultaReserva>(result);
+                            reserva.FechaHoraRetiro = DateTime.ParseExact(reserva.FechaHoraRetiro.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                            reserva.FechaHoraDevolucion = DateTime.ParseExact(reserva.FechaHoraDevolucion.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
                             ViewBag.DetalleReserva = reserva;
                             return View();
                         }

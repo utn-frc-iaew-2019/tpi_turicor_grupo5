@@ -9,6 +9,10 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using APP.Models;
+using System.Net;
+using System.IO;
+using System.Text;
+using Newtonsoft.Json;
 
 namespace APP.Controllers
 {
@@ -333,7 +337,54 @@ namespace APP.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    try
+                    {
+                        //TENGO QUE LLAMAR A LA API Y PREGUNTAR SI EXISTE UN CLIENTE CON ESTE NOMBRE
+                        //Inicializamos el objeto WebRequest
+                        var req1 = WebRequest.Create(@"http://localhost:26812/api/Users/UserExist?mail=" + loginInfo.Email);
+                        Console.Write(loginInfo.Login.ProviderKey); //PARA PROBAR QUE ES
+                                                                    //Indicamos el método a utilizar
+                        req1.Method = "GET";
+                        //Definimos que el contenido del cuerpo del request tiene el formato Json
+                        req1.ContentType = "application/json";
+
+                        //Realizamos la llamada a la API de la siguiente forma.
+                        var resp1 = req1.GetResponse() as HttpWebResponse;
+                        if (resp1 != null && resp1.StatusCode == HttpStatusCode.OK)
+                        {
+                            using (var respStream1 = resp1.GetResponseStream())
+                            {
+                                if (respStream1 != null)
+                                {
+                                    //Obtenemos de la siguiente el cuerpo de la respuesta
+                                    var reader1 = new StreamReader(respStream1, Encoding.UTF8);
+                                    string result1 = reader1.ReadToEnd();
+
+                                    //El cuerpo en formato Json lo deserealizamos en el objeto usuario
+                                    Cliente cliente = JsonConvert.DeserializeObject<Cliente>(result1);
+
+                                    ViewBag.Cliente = cliente;
+                                    System.Web.HttpContext.Current.Session["sessionIdUser"] = cliente.Id;
+                                    return RedirectToAction("Index", "Home");
+                                    //return RedirectToLocal(returnUrl);
+                                }
+                                return View();
+                            }
+                        }
+                        else
+                        {
+                            ViewBag.ReturnUrl = returnUrl;
+                            ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+                            return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ViewBag.ReturnUrl = returnUrl;
+                        ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
+                        return View("ExternalLoginConfirmation", new ExternalLoginConfirmationViewModel { Email = loginInfo.Email });
+                    }
+
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -351,34 +402,103 @@ namespace APP.Controllers
         // POST: /Account/ExternalLoginConfirmation
         [HttpPost]
         [AllowAnonymous]
-        [ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<ActionResult> ExternalLoginConfirmation(ExternalLoginConfirmationViewModel model, string returnUrl)
         {
-            if (User.Identity.IsAuthenticated)
-            {
-                return RedirectToAction("Index", "Manage");
-            }
+            //if (User.Identity.IsAuthenticated)
+            //{
+            //    //SI ES UN USUARIO YA REGISTRADO ENTRA ACA
+            //    return RedirectToAction("Index", "Manage");
+            //}
 
             if (ModelState.IsValid)
             {
                 // Obtener datos del usuario del proveedor de inicio de sesión externo
-                var info = await AuthenticationManager.GetExternalLoginInfoAsync();
-                if (info == null)
+                //var info = await AuthenticationManager.GetExternalLoginInfoAsync();
+                //if (info == null)
+                //{
+                //    return View("ExternalLoginFailure");
+                //}
+
+                //ACA SE CREA EL CLIENTE - SE HACE TIRO POST A LA API
+                try
                 {
-                    return View("ExternalLoginFailure");
-                }
-                var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
-                var result = await UserManager.CreateAsync(user);
-                if (result.Succeeded)
-                {
-                    result = await UserManager.AddLoginAsync(user.Id, info.Login);
-                    if (result.Succeeded)
+                    Cliente cliente = new Cliente();
+                    cliente.Nombre = model.Nombre;
+                    cliente.Apellido = model.Apellido;
+                    cliente.Documento = model.Documento;
+                    cliente.Usuario = model.Email;
+
+                    //Inicializamos el objeto WebRequest
+                    var req = WebRequest.Create(@"http://localhost:26812/api/Users/PostUser");
+
+                    //Indicamos el método a utilizar
+                    req.Method = "POST";
+                    //Definimos que el contenido del cuerpo del request tiene el formato Json
+                    req.ContentType = "application/json";
+
+                    using (var streamWriter = new StreamWriter(req.GetRequestStream()))
                     {
-                        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
-                        return RedirectToLocal(returnUrl);
+                        //Serializamos el objeto usuario en un string con formato Json
+                        var jsonData = JsonConvert.SerializeObject(cliente);
+
+                        streamWriter.Write(jsonData);
+                        streamWriter.Flush();
+                        streamWriter.Close();
                     }
+
+                    //Realizamos la llamada a la API de la siguiente forma.
+                    var resp = req.GetResponse() as HttpWebResponse;
+
+                    //El protocolo HTTP define un cambpo Status que indica el estado de la peticion.
+                    //StatusCode = 200 (OK), indica que la llamada se proceso correctamente.
+                    //Cualquier otro caso corresponde a un error.
+                    if (resp != null && resp.StatusCode == HttpStatusCode.OK)
+                    {
+                        using (var respStream = resp.GetResponseStream())
+                        {
+                            if (respStream != null)
+                            {
+                                //Obtenemos de la siguiente el cuerpo de la respuesta
+                                var reader = new StreamReader(respStream, Encoding.UTF8);
+                                string result1 = reader.ReadToEnd();
+
+                                //El cuerpo en formato Json lo deserealizamos en el objeto usuario
+                                Cliente cli = JsonConvert.DeserializeObject<Cliente>(result1);
+
+                                //return Json(new { cliente = cli }, JsonRequestBehavior.AllowGet);
+                                System.Web.HttpContext.Current.Session["sessionIdUser"] = cliente.Id;
+                                return RedirectToLocal(returnUrl);
+                            }
+                        }
+                        return null;
+                    }
+                    else
+                    {
+                        Console.WriteLine("Status Code: {0}, Status Description: {1}", resp.StatusCode, resp.StatusDescription);
+                        return null;
+                    }
+
+
+
                 }
-                AddErrors(result);
+                catch (Exception ex)
+                {
+
+                }
+
+                //var user = new ApplicationUser { UserName = model.Email, Email = model.Email };
+                //var result = await UserManager.CreateAsync(user);
+                //if (result.Succeeded)
+                //{
+                //    result = await UserManager.AddLoginAsync(user.Id, info.Login);
+                //    if (result.Succeeded)
+                //    {
+                //        await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                //        return RedirectToLocal(returnUrl);
+                //    }
+                //}
+                //AddErrors(result);
             }
 
             ViewBag.ReturnUrl = returnUrl;

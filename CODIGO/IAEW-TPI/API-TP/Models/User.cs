@@ -7,11 +7,11 @@ namespace API_TP.Models
 {
     public class User
     {
-        public int IdUser { get; set; }
-        public string Name { get; set; }
-        public string UserName { get; set; }
-        public string Password { get; set; }
-        public DateTime ModifiedDate { get; set; }
+        public int Id { get; set; }
+        public string Nombre { get; set; }
+        public string Apellido { get; set; }
+        public int Documento { get; set; }
+        public string Usuario { get; set; }
 
     }
 }

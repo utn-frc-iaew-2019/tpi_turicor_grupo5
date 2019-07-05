@@ -7,14 +7,14 @@
 
 @using (Html.BeginForm("ExternalLoginConfirmation", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
 {
-    @Html.AntiForgeryToken()
+    @*@Html.AntiForgeryToken()*@
 
     <h4>Formulario de asociación</h4>
     <hr />
     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
     <p class="text-info">
         Se autenticó correctamente con <strong>@ViewBag.LoginProvider</strong>.
-        Introduzca un nombre de usuario para este sitio y haga clic en el botón Registrar para finalizar
+        Introduzca la siguiente información para este sitio y haga clic en el botón Registrar para finalizar
         el inicio de sesión.
     </p>
     <div class="form-group">
@@ -22,6 +22,27 @@
         <div class="col-md-10">
             @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
             @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Nombre, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Nombre, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Nombre, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Apellido, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Apellido, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Apellido, "", new { @class = "text-danger" })
+        </div>
+    </div>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Documento, new { @class = "col-md-2 control-label" })
+        <div class="col-md-10">
+            @Html.TextBoxFor(m => m.Documento, new { @class = "form-control" })
+            @Html.ValidationMessageFor(m => m.Documento, "", new { @class = "text-danger" })
         </div>
     </div>
     <div class="form-group">

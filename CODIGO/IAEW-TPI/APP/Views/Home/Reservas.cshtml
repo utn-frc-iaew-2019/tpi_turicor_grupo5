@@ -12,13 +12,8 @@
                     <tr>
                         <th>CodigoReserva</th>
                         <th>FechaReserva</th>
-                        <th>IdCliente</th>
-                        <th>IdVendedor</th>
-                        <th>Costo</th>
                         <th>PrecioVenta</th>
-                        <th>IdVehiculoCiudad</th>
-                        <th>IdCiudad</th>
-                        <th>idPais</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -26,18 +21,15 @@
                     {
                         foreach (var reserva in ViewBag.Reservas)
                         {
-                            <tr>
-                                <td>@reserva.CodigoReserva</td>
-                                <td>@reserva.FechaReserva</td>
-                                <td>@reserva.IdCliente</td>
-                                <td>@reserva.IdVendedor</td>
-                                <td>@reserva.Costo</td>
-                                <td>@reserva.PrecioVenta</td>
-                                <td>@reserva.IdVehiculoCiudad</td>
-                                <td>@reserva.IdCiudad</td>
-                                <td>@reserva.idPais</td>
+                    <tr>
+                        <td>@reserva.CodigoReserva</td>
+                        <td>@reserva.FechaReserva</td>
+                        <td>@reserva.PrecioVenta</td>
+                        <td>
+                            <a href="@Url.Action("DetalleReserva", "Home", new { codigo = reserva.CodigoReserva})" class="btn btn-success btn-sm" style="color:white"> VER DETALLE <i class="fas fa-eye"></i></a>
+                        </td>
 
-                            </tr>
+                    </tr>
                         }
                     }
                 </tbody>

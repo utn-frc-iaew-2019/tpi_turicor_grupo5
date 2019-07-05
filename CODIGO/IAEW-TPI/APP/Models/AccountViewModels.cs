@@ -8,6 +8,18 @@ namespace APP.Models
         [Required]
         [Display(Name = "Correo electrónico")]
         public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "Nombre")]
+        public string Nombre { get; set; }
+
+        [Required]
+        [Display(Name = "Apellido")]
+        public string Apellido { get; set; }
+
+        [Required]
+        [Display(Name = "Documento")]
+        public int Documento { get; set; }
     }
 
     public class ExternalLoginListViewModel

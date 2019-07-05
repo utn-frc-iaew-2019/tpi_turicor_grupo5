@@ -7,6 +7,7 @@ namespace API_TP.Models
 {
     public class DetalleReserva
     {
+        public int IdUsuario { get; set; }
         public string ApellidoNombreCliente { get; set; }
         public DateTime FechaHoraDevolucion { get; set; }
         public DateTime FechaHoraRetiro { get; set; }

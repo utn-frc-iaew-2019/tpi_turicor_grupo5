@@ -48,20 +48,42 @@ namespace API_TP.Controllers
 
 
         [HttpPost]
-        public IHttpActionResult PostUser(string name, string lastname, int doc, string email)
+        public IHttpActionResult PostUser([FromBody] User usuario)
         {
             try
             {
                 Cliente client = new Cliente();
-                client.Nombre = name;
-                client.Apellido = lastname;
-                client.NroDocumento = doc;
-                client.Usuario = email;
+                client.Nombre = usuario.Nombre;
+                client.Apellido = usuario.Apellido;
+                client.NroDocumento = usuario.Documento;
+                client.Usuario = usuario.Usuario;
 
                 db.Cliente.Add(client);
                 db.SaveChanges();
+                db.Entry(client).GetDatabaseValues();
 
-                return Ok(client);
+
+                return Ok(new { Id = client.Id, Nombre = client.Nombre, Apellido = client.Apellido,
+                Documento = client.NroDocumento, Usuario = client.Usuario});
+            }
+            catch (Exception ex)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpGet]
+        public IHttpActionResult UserExist(string mail)
+        {
+            try
+            {
+                Cliente client = db.Cliente.Where(x => x.Usuario.Equals(mail)).FirstOrDefault();
+                if(client != null)
+                {
+                    return Ok(new { Id = client.Id, Nombre = client.Nombre, Apellido = client.Apellido,
+                    Documento = client.NroDocumento, Usuario = client.Usuario});
+                }
+                return NotFound();
             }
             catch (Exception ex)
             {
