@@ -127,7 +127,7 @@ namespace API_TP.Controllers
         [HttpPost]
         [Route("api/Reservas/CancelarReserva")]
         [AcceptVerbs("DELETE", "POST")]
-        public IHttpActionResult CancelarReserva([FromBody] string codigoReserva)
+        public IHttpActionResult CancelarReserva([FromUri] string codigoReserva)
         {
             try
             {
@@ -137,12 +137,13 @@ namespace API_TP.Controllers
                 var request = new ServiceReference1.CancelarReservaRequest();
                 request.CodigoReserva = codigoReserva;
                 var valor = client.CancelarReserva(credentials, request);
-                db.Reserva.Remove(db.Reserva.Find(valor.Reserva.Id));
+                Reserva reserva = db.Reserva.Where(x => x.CodigoReserva == codigoReserva).FirstOrDefault();
+                db.Reserva.Remove(reserva);
                 db.SaveChanges();
 
-                return Ok(valor);
+                return Ok(reserva.CodigoReserva);
             }
-            catch(Exception)
+            catch(Exception ex)
             {
                 return NotFound();
             }
@@ -181,7 +182,7 @@ namespace API_TP.Controllers
                 //request.LugarDevolucion = reserva.LugarDevolucion;
                 var valor = client.ReservarVehiculo(credentials, request);
 
-                decimal costoReserva = valor.Reserva.TotalReserva * (-1); //VIENE EN NEGATIVO, POR ESO SE MULTIPLICA POR -1
+                decimal costoReserva = valor.Reserva.TotalReserva; //VIENE EN NEGATIVO, POR ESO SE MULTIPLICA POR -1
                 decimal precioFinalReserva = costoReserva * (decimal)1.2;
                 string codigoReserva = valor.Reserva.CodigoReserva;
 

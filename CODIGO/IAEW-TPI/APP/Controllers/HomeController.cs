@@ -312,8 +312,9 @@ namespace APP.Controllers
 
                             //El cuerpo en formato Json lo deserealizamos en el objeto usuario
                             Reserva res = JsonConvert.DeserializeObject<Reserva>(result);
+                            
+                            return Json(new { ok = true, reserva = res.CodigoReserva }, JsonRequestBehavior.AllowGet);
 
-                            return Json(new { ok = true, reserva = res }, JsonRequestBehavior.AllowGet);
                         }
                     }
                     return null;
@@ -335,7 +336,7 @@ namespace APP.Controllers
         public ActionResult Reservas()
         {
             this.GetListaReservas();
-            this.CancelarReserva();
+            //this.CancelarReserva();
             return View();
         }
 
@@ -419,8 +420,8 @@ namespace APP.Controllers
                             string result = reader.ReadToEnd();
 
                             var reserva = JsonConvert.DeserializeObject<ConsultaReserva>(result);
-                            //reserva.FechaHoraRetiro = DateTime.ParseExact(reserva.FechaHoraRetiro.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                            //reserva.FechaHoraDevolucion = DateTime.ParseExact(reserva.FechaHoraDevolucion.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                            //reserva.FechaHoraRetiro = DateTime.ParseExact(reserva.FechaHoraRetiro.ToString(), "yyyy/MM/dd", CultureInfo.InvariantCulture);
+                            //reserva.FechaHoraDevolucion = DateTime.ParseExact(reserva.FechaHoraDevolucion.ToString(), "yyyy/MM/aa", CultureInfo.InvariantCulture);
                             ViewBag.DetalleReserva = reserva;
                             return View();
                         }
@@ -440,23 +441,24 @@ namespace APP.Controllers
             }
         }
 
-
-        public ActionResult CancelarReserva()
+        [HttpPost]
+        public ActionResult CancelarReserva(string codigo)
         {
-            string codigoReserva = Request.Form["cancelarReserva"];
+            //string codigoReserva = Request.Form["cancelarReserva"];
+            string codigoReserva = codigo;
             if (codigoReserva != null)
             {
                 try
                 {
 
-                    var req = WebRequest.Create(@"http://localhost:26812/api/Reservas/CancelarReserva");
+                    var req = WebRequest.Create(@"http://localhost:26812/api/Reservas/CancelarReserva?codigoReserva=" + codigoReserva);
 
                     req.Method = "POST";
                     req.ContentType = "application/x-www-form-urlencoded";
-                    
+
                     using (var streamWriter = new StreamWriter(req.GetRequestStream()))
-                    {                        
-                        streamWriter.Write(codigoReserva);
+                    {
+                        streamWriter.Write("");
                         streamWriter.Flush();
                         streamWriter.Close();
                     }
@@ -472,7 +474,7 @@ namespace APP.Controllers
                                 var reader = new StreamReader(respStream, Encoding.UTF8);
                                 string result = reader.ReadToEnd();
 
-                                return Json(result.ToString());
+                                return Json(new { ok = true, result = result }, JsonRequestBehavior.AllowGet);
                             }
                         }
                     }
@@ -488,7 +490,7 @@ namespace APP.Controllers
                 catch (Exception ex)
                 {
                     Console.WriteLine(ex.ToString());
-                    return null;
+                    return Json(new { ok = false }, JsonRequestBehavior.AllowGet);
                 }
             }
 
