@@ -125,7 +125,9 @@ namespace API_TP.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult CancelarReserva([FromUri]string codigo)
+        [Route("api/Reservas/CancelarReserva")]
+        [AcceptVerbs("DELETE", "POST")]
+        public IHttpActionResult CancelarReserva([FromBody] string codigoReserva)
         {
             try
             {
@@ -133,15 +135,14 @@ namespace API_TP.Controllers
                 var credentials = Credenciales();
 
                 var request = new ServiceReference1.CancelarReservaRequest();
-                request.CodigoReserva = codigo;
+                request.CodigoReserva = codigoReserva;
                 var valor = client.CancelarReserva(credentials, request);
-
                 db.Reserva.Remove(db.Reserva.Find(valor.Reserva.Id));
                 db.SaveChanges();
 
                 return Ok(valor);
             }
-            catch(Exception ex)
+            catch(Exception)
             {
                 return NotFound();
             }
@@ -157,8 +158,8 @@ namespace API_TP.Controllers
         }
 
 
-
         [HttpPost]
+        [Route("api/Reservas/ReservarVehiculo")]
         public IHttpActionResult ReservarVehiculo([FromBody] DetalleReserva reserva)
         {
             //TIRO EN POSTMAN
@@ -189,8 +190,6 @@ namespace API_TP.Controllers
                 nuevaReserva.CodigoReserva = codigoReserva;
                 nuevaReserva.FechaReserva = reserva.FechaHoraRetiro;
 
-                //Para obtener el ID del cliente hay que buscarlo en la BD con el nro de documento que viene en la variable 'reserva' que se recibe por parametro
-                //nuevaReserva.IdCliente = cliente.Id;
                 nuevaReserva.Costo = (double)costoReserva;
                 nuevaReserva.PrecioVenta = (double)precioFinalReserva;
                 nuevaReserva.IdVehiculoCiudad = reserva.IDVehiculoCiudad;
@@ -202,7 +201,7 @@ namespace API_TP.Controllers
 
                 return Ok(nuevaReserva.ToString());
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return NotFound();
             }
