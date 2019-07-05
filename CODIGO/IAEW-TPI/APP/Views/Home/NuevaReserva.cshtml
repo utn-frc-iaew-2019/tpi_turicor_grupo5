@@ -13,7 +13,7 @@
             <label for="ApellidoNombre" class="col-sm-2 control-label">Apellido y Nombre</label>
             <div class="col-sm-8">
                 <input type="text" class="form-control" id="txtNombreApellido" name="txtNombreApellido" placeholder="">
-                <input type="number" id="idUsuario" value="@ViewBag.IdUser" hidden="hidden" /> 
+                <input type="number" id="idUsuario" value="@ViewBag.IdUser" hidden="hidden" />
             </div>
         </div>
         <div class="form-group" style="padding-left:100px; padding-top:15px;">
@@ -64,7 +64,9 @@
 
 
 @section Scripts{
-    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css" />
+    <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
     <script>
         function GuardarReserva() {
             var idUsuario = $("#idUsuario").val();
@@ -93,12 +95,12 @@
                         lugarDevolucion: txtLugarDevolucion
                     },
                     success: function (data) {
-                        if (data != null) {
+                        if (data.ok) {
                             //data.reserva
                             swal({
                                 title: "Reserva Registrada",
-                                type: "success",
-                                text: "La Reserva se ha registrado correctamente. El detalle es: " + data.reserva
+                                text: "La Reserva se ha registrado correctamente",
+                                type: "success"
                             },
                                 function () {
                                     window.location.href = "/Home/Vehiculos";

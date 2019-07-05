@@ -313,7 +313,7 @@ namespace APP.Controllers
                             //El cuerpo en formato Json lo deserealizamos en el objeto usuario
                             Reserva res = JsonConvert.DeserializeObject<Reserva>(result);
 
-                            return Json(new { reserva = res }, JsonRequestBehavior.AllowGet);
+                            return Json(new { ok = true, reserva = res }, JsonRequestBehavior.AllowGet);
                         }
                     }
                     return null;
@@ -419,8 +419,8 @@ namespace APP.Controllers
                             string result = reader.ReadToEnd();
 
                             var reserva = JsonConvert.DeserializeObject<ConsultaReserva>(result);
-                            reserva.FechaHoraRetiro = DateTime.ParseExact(reserva.FechaHoraRetiro.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                            reserva.FechaHoraDevolucion = DateTime.ParseExact(reserva.FechaHoraDevolucion.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                            //reserva.FechaHoraRetiro = DateTime.ParseExact(reserva.FechaHoraRetiro.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                            //reserva.FechaHoraDevolucion = DateTime.ParseExact(reserva.FechaHoraDevolucion.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
                             ViewBag.DetalleReserva = reserva;
                             return View();
                         }
