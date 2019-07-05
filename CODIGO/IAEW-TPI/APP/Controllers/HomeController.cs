@@ -443,21 +443,44 @@ namespace APP.Controllers
 
         public ActionResult CancelarReserva()
         {
-
             string codigoReserva = Request.Form["cancelarReserva"];
             if (codigoReserva != null)
             {
                 try
                 {
 
-                    var req = WebRequest.Create(@"http://localhost:26812/api/Reservas/CancelarReserva?codigo=" + codigoReserva);
+                    var req = WebRequest.Create(@"http://localhost:26812/api/Reservas/CancelarReserva");
 
-                    req.Method = "DELETE";
-                    req.ContentType = "application/json";
+                    req.Method = "POST";
+                    req.ContentType = "application/x-www-form-urlencoded";
+                    
+                    using (var streamWriter = new StreamWriter(req.GetRequestStream()))
+                    {                        
+                        streamWriter.Write(codigoReserva);
+                        streamWriter.Flush();
+                        streamWriter.Close();
+                    }
 
-                    Stream dataStream = req.GetRequestStream();
-                    dataStream.Write(Encoding.UTF8.GetBytes(codigoReserva), 0, codigoReserva.Length);
-                    dataStream.Close();
+                    var resp = req.GetResponse() as HttpWebResponse;
+                    if (resp != null && resp.StatusCode == HttpStatusCode.OK)
+                    {
+                        using (var respStream = resp.GetResponseStream())
+                        {
+                            if (respStream != null)
+                            {
+                                //Obtenemos de la siguiente el cuerpo de la respuesta
+                                var reader = new StreamReader(respStream, Encoding.UTF8);
+                                string result = reader.ReadToEnd();
+
+                                return Json(result.ToString());
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Console.WriteLine("Status Code: {0}, Status Description: {1}", resp.StatusCode, resp.StatusDescription);
+                        return null;
+                    }
 
                     return View();
 
@@ -469,7 +492,6 @@ namespace APP.Controllers
                 }
             }
 
-                
             return View();
         }
 
